@@ -179,50 +179,59 @@ function _buildRepoCard(repo) {
     : '';
 
   return `
-    <article class="repo-card" aria-label="Repository: ${_escapeHtml(repo.name)}">
-      <div class="repo-card-header">
-        <a
-          href="${repo.html_url}"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="repo-name"
-          title="${_escapeHtml(repo.name)}"
-        >${_escapeHtml(repo.name)}</a>
-        <div style="display:flex;gap:6px;align-items:center;flex-shrink:0">
-          ${forkBadge}
-          ${archivedBadge}
+    <a
+      href="${repo.html_url}"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="repo-card-link"
+      aria-label="Open ${_escapeHtml(repo.name)} on GitHub"
+    >
+      <article class="repo-card" aria-label="Repository: ${_escapeHtml(repo.name)}">
+        <div class="repo-card-header">
+          <span class="repo-name" title="${_escapeHtml(repo.name)}">
+            ${_escapeHtml(repo.name)}
+            <svg class="repo-external-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12" aria-hidden="true">
+              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+              <polyline points="15 3 21 3 21 9"/>
+              <line x1="10" y1="14" x2="21" y2="3"/>
+            </svg>
+          </span>
+          <div style="display:flex;gap:6px;align-items:center;flex-shrink:0">
+            ${forkBadge}
+            ${archivedBadge}
+          </div>
         </div>
-      </div>
 
-      <p class="repo-description">${desc}</p>
+        <p class="repo-description">${desc}</p>
 
-      <div class="repo-card-footer">
-        ${repo.language ? `
-          <span class="repo-stat">
-            <span class="repo-lang-dot" style="background:${color}"></span>
-            ${_escapeHtml(repo.language)}
-          </span>` : ''}
+        <div class="repo-card-footer">
+          ${repo.language ? `
+            <span class="repo-stat">
+              <span class="repo-lang-dot" style="background:${color}"></span>
+              ${_escapeHtml(repo.language)}
+            </span>` : ''}
 
-        <span class="repo-stat" title="${repo.stargazers_count} stars">
-          <svg viewBox="0 0 24 24" fill="currentColor" style="color:var(--color-warning)">
-            <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/>
-          </svg>
-          ${formatNumber(repo.stargazers_count)}
-        </span>
+          <span class="repo-stat" title="${repo.stargazers_count} stars">
+            <svg viewBox="0 0 24 24" fill="currentColor" style="color:var(--color-warning)">
+              <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/>
+            </svg>
+            ${formatNumber(repo.stargazers_count)}
+          </span>
 
-        <span class="repo-stat" title="${repo.forks_count} forks">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <circle cx="12" cy="18" r="3"/><circle cx="6" cy="6" r="3"/><circle cx="18" cy="6" r="3"/>
-            <path d="M18 9v2c0 .6-.4 1-1 1H7c-.6 0-1-.4-1-1V9"/><line x1="12" y1="15" x2="12" y2="12"/>
-          </svg>
-          ${formatNumber(repo.forks_count)}
-        </span>
+          <span class="repo-stat" title="${repo.forks_count} forks">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="18" r="3"/><circle cx="6" cy="6" r="3"/><circle cx="18" cy="6" r="3"/>
+              <path d="M18 9v2c0 .6-.4 1-1 1H7c-.6 0-1-.4-1-1V9"/><line x1="12" y1="15" x2="12" y2="12"/>
+            </svg>
+            ${formatNumber(repo.forks_count)}
+          </span>
 
-        <span class="repo-stat" title="Updated ${updated}" style="margin-left:auto;color:var(--text-muted);font-size:0.75rem">
-          ${updated}
-        </span>
-      </div>
-    </article>
+          <span class="repo-stat" title="Updated ${updated}" style="margin-left:auto;color:var(--text-muted);font-size:0.75rem">
+            ${updated}
+          </span>
+        </div>
+      </article>
+    </a>
   `;
 }
 
