@@ -182,6 +182,7 @@ export function buildExportData(profile, repos, analytics) {
       full_name: r.full_name,
       description: r.description,
       html_url: r.html_url,
+      homepage: r.homepage || null,
       language: r.language,
       stargazers_count: r.stargazers_count,
       forks_count: r.forks_count,
