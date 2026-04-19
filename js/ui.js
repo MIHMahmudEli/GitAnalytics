@@ -7,6 +7,67 @@ import { getLangColor, formatNumber } from './analytics.js';
 // ── Profile ─────────────────────────────────────────────────────────────────
 
 /**
+ * Render the website preview section
+ * @param {Object} profile - raw GitHub user object
+ */
+export function renderWebsitePreview(profile) {
+  const section = _el('websiteSection');
+  if (!section) return;
+
+  const url = profile.blog;
+  if (!url) {
+    section.classList.add('hidden');
+    return;
+  }
+
+  // Ensure absolute URL
+  const fullUrl = url.startsWith('http') ? url : `https://${url}`;
+
+  // Update UI
+  _set('websiteUrlText', url.replace(/^https?:\/\//, '').replace(/\/$/, ''));
+  _set('websiteIframeAddress', fullUrl);
+
+  const openBtn = _el('websiteOpenBtn');
+  const blockedBtn = _el('websiteBlockedBtn');
+  if (openBtn) openBtn.href = fullUrl;
+  if (blockedBtn) blockedBtn.href = fullUrl;
+
+  const iframe = _el('websiteIframe');
+  const iframeContainer = _el('websiteIframeContainer');
+  const blockedContainer = _el('websiteBlocked');
+  const loading = _el('websiteIframeLoading');
+
+  if (iframe) {
+    // Reset state
+    section.classList.remove('hidden');
+    iframeContainer.classList.remove('hidden');
+    blockedContainer.classList.add('hidden');
+    loading?.classList.remove('hidden');
+
+    // Basic heuristic: if the site is http but we are https, it will be blocked by mixed-content
+    if (window.location.protocol === 'https:' && fullUrl.startsWith('http://')) {
+      iframeContainer.classList.add('hidden');
+      blockedContainer.classList.remove('hidden');
+    } else {
+      // Clear before setting new src
+      iframe.src = 'about:blank';
+      setTimeout(() => {
+        iframe.src = fullUrl;
+      }, 50);
+
+      // Hide loading spinner on load
+      iframe.onload = () => {
+        loading?.classList.add('hidden');
+      };
+      
+      // Iframe loading errors (like X-Frame-Options) cannot be caught via JavaScript due to cross-origin rules. 
+      // The browser will show its native broken frame inside the iframe, 
+      // and we provide the fallback 'Open Website' button for the user to use.
+    }
+  }
+}
+
+/**
  * Render the profile card
  * @param {Object} profile - raw GitHub user object
  */

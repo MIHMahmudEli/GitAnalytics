@@ -9,6 +9,7 @@ import { fetchUserProfile, fetchUserRepos } from './api.js';
 import { computeAnalytics, buildExportData, formatNumber } from './analytics.js';
 import {
   renderProfile,
+  renderWebsitePreview,
   renderAnalyticsCards,
   renderLangChart,
   renderRepos,
@@ -171,6 +172,7 @@ async function analyzeUser(username) {
 
     // Render
     renderProfile(profile);
+    renderWebsitePreview(profile);
     renderAnalyticsCards(state.analytics);
     renderLangChart(state.analytics.languages);
     populateLangFilter(repos);
