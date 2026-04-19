@@ -239,29 +239,30 @@ function _buildRepoCard(repo) {
        </span>`
     : '';
 
+  const liveBadge = repo.homepage
+    ? `<a href="${repo.homepage.startsWith('http') ? repo.homepage : 'http://' + repo.homepage}" target="_blank" rel="noopener noreferrer" class="repo-live-badge" title="${_escapeHtml(repo.homepage)}">
+         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="10" height="10"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
+         Live
+       </a>`
+    : '';
+
   return `
-    <a
-      href="${repo.html_url}"
-      target="_blank"
-      rel="noopener noreferrer"
-      class="repo-card-link"
-      aria-label="Open ${_escapeHtml(repo.name)} on GitHub"
-    >
-      <article class="repo-card" aria-label="Repository: ${_escapeHtml(repo.name)}">
-        <div class="repo-card-header">
-          <span class="repo-name" title="${_escapeHtml(repo.name)}">
-            ${_escapeHtml(repo.name)}
-            <svg class="repo-external-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12" aria-hidden="true">
-              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
-              <polyline points="15 3 21 3 21 9"/>
-              <line x1="10" y1="14" x2="21" y2="3"/>
-            </svg>
-          </span>
-          <div style="display:flex;gap:6px;align-items:center;flex-shrink:0">
-            ${forkBadge}
-            ${archivedBadge}
-          </div>
+    <article class="repo-card" aria-label="Repository: ${_escapeHtml(repo.name)}">
+      <div class="repo-card-header">
+        <a href="${repo.html_url}" target="_blank" rel="noopener noreferrer" class="repo-name repo-main-link" title="${_escapeHtml(repo.name)}">
+          ${_escapeHtml(repo.name)}
+          <svg class="repo-external-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12" aria-hidden="true">
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+            <polyline points="15 3 21 3 21 9"/>
+            <line x1="10" y1="14" x2="21" y2="3"/>
+          </svg>
+        </a>
+        <div class="repo-badges">
+          ${liveBadge}
+          ${forkBadge}
+          ${archivedBadge}
         </div>
+      </div>
 
         <p class="repo-description">${desc}</p>
 
@@ -291,8 +292,8 @@ function _buildRepoCard(repo) {
             ${updated}
           </span>
         </div>
-      </article>
-    </a>
+      </div>
+    </article>
   `;
 }
 

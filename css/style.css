@@ -869,16 +869,20 @@ ul { list-style: none; }
   gap: 16px;
 }
 
-/* Clickable card wrapper */
-.repo-card-link {
-  display: block;
-  text-decoration: none;
-  color: inherit;
-  border-radius: var(--radius-lg);
+/* Clickable card expanding link pattern */
+.repo-main-link::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1; /* stretches to fill repo-card */
+}
+
+/* Ensure focus outline appears on the card when tabbing to the main link */
+.repo-main-link:focus-visible {
   outline: none;
 }
 
-.repo-card-link:focus-visible .repo-card {
+.repo-card:has(.repo-main-link:focus-visible) {
   border-color: var(--color-primary);
   box-shadow: 0 0 0 3px rgba(110, 86, 207, 0.35);
 }
@@ -943,10 +947,40 @@ ul { list-style: none; }
   color: var(--color-primary-light);
 }
 
-.repo-card-link:hover .repo-name { color: var(--color-primary-light); }
-.repo-card-link:hover .repo-external-icon {
+.repo-card:hover .repo-name { color: var(--color-primary-light); }
+.repo-card:hover .repo-external-icon {
   opacity: 1;
   transform: translate(2px, -2px);
+}
+
+.repo-badges {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 2; /* Needs to be above the overlay so buttons are clickable */
+}
+
+.repo-live-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.7rem;
+  padding: 2px 8px;
+  border-radius: var(--radius-pill);
+  background: rgba(52, 211, 153, 0.1);
+  border: 1px solid rgba(52, 211, 153, 0.2);
+  color: var(--color-success);
+  white-space: nowrap;
+  flex-shrink: 0;
+  text-decoration: none;
+  transition: all var(--transition-fast);
+}
+
+.repo-live-badge:hover {
+  background: rgba(52, 211, 153, 0.25);
+  color: #fff;
 }
 
 .repo-fork-badge {
